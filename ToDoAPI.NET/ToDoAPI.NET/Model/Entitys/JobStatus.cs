@@ -1,6 +1,6 @@
-﻿namespace ToDoAPI.NET.Model
+﻿namespace ToDoAPI.NET.Model.Entitys
 {
-    public enum TaskStatus
+    public enum JobStatus
     {
         Backlog = 0,
         InProgress = 1,

@@ -24,6 +24,14 @@ namespace ToDoAPI.NET.Model.Repositories
             return await _context.Jobs.Where(x => x.JobStatus == jobStatus).ToListAsync();
         }
 
+        public async Task<JobStatus> GetJobStatus(Job job)
+        {
+            return await _context.Jobs
+                               .Where(x => x.Id == job.Id)
+                               .Select(x => x.JobStatus)
+                               .FirstOrDefaultAsync();
+        }
+
         public async Task<Job> GetJobByIdAsync(int? id)
         {
             return await _context.Jobs.FindAsync(id) ?? throw new ArgumentNullException();
@@ -45,6 +53,8 @@ namespace ToDoAPI.NET.Model.Repositories
 
         public async Task<Job> DeleteAsync(Job job)
         {
+            _context.Entry(job).State = EntityState.Deleted;
+
             _context.Remove(job);
             await _context.SaveChangesAsync();
             return job;

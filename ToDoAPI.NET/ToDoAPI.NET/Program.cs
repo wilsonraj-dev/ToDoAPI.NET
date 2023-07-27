@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using ToDoAPI.NET.Context;
+using ToDoAPI.NET.Interfaces;
+using ToDoAPI.NET.Model.Repositories;
+using ToDoAPI.NET.Validations.Interfaces;
+using ToDoAPI.NET.Validations.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(op =>
             op.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IValidateStatusJobs, ValidateStatusJobs>();
 
 var app = builder.Build();
 
